@@ -1,6 +1,6 @@
-worker_processes 4;
+worker_processes {{ WORKER_PROCESSES }};
 user root root;
-error_log /var/log/nginx/nginx-error.log info;
+error_log {{ ERROR_LOG }} {{ LOG_LEVEL }};
 
 events {
   worker_connections 1024;
@@ -9,7 +9,7 @@ events {
 }
 
 http {
-  upstream trans {
+  upstream app {
     {% if TRANSMISSION_HOST is defined %}
     server {{ TRANSMISSION_HOST }}:9091 fail_timeout=0;
     {% else %}
@@ -20,7 +20,7 @@ http {
   server {
     listen 80 default deferred;
     location / {
-      proxy_pass http://trans;
+      proxy_pass http://app;
     }
   }
 }

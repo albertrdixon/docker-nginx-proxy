@@ -3,11 +3,13 @@ MAINTAINER Albert Dixon <albert@timelinelabs.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN add-apt-repository -y ppa:nginx/stable &&\
-    apt-get update
-RUN apt-get --no-install-recommends -y nginx python3 &&\
-    apt-get autoclean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update
+RUN apt-get install --no-install-recommends -y build-essential nginx \
+    python python-dev python-pip
 RUN pip install envtpl
+RUN apt-get remove -y --purge build-essential python-dev &&\
+    apt-get autoremove -y && apt-get autoclean -y &&\
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN rm -f /etc/nginx/nginx.conf
 COPY configs/* /etc/nginx/
@@ -18,4 +20,7 @@ WORKDIR /etc/nginx
 ENTRYPOINT ["docker-start"]
 EXPOSE 80 443
 
-ENV PATH  /usr/local/bin:$PATH
+ENV PATH              /usr/local/bin:$PATH
+ENV WORKER_PROCESSES  4
+ENV ERROR_LOG         /var/log/nginx/nginx-error.log
+ENV LOG_LEVEL         info

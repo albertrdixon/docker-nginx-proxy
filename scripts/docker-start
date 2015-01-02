@@ -1,11 +1,20 @@
 #!/bin/bash
+set -eo pipefail
 
-ulimit -n 65535
-: ${TRANSMISSION_HOST:=$TRANSMISSION_PORT_9091_TCP_ADDR}
+function main {
+  local cmd="$@"
+  [ -z "$cmd" ] && cmd=nginx
 
-for conf in /etc/nginx/nginx.conf.tpl /etc/nginx/conf.d/*.tpl
-do
-  envtpl "$conf"
-done
+  ulimit -n 65535
+  : ${TRANSMISSION_HOST:=$TRANSMISSION_PORT_9091_TCP_ADDR}
 
-exec nginx
+  for conf in /etc/nginx/nginx.conf.tpl $(ls /etc/nginx/conf.d/*.tpl)
+  do
+    envtpl "$conf"
+  done
+
+  exec "$cmd"
+}
+
+main "$@"
+exit 0
