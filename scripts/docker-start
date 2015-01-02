@@ -8,7 +8,7 @@ function main {
   ulimit -n 65535
   : ${TRANSMISSION_HOST:=$TRANSMISSION_PORT_9091_TCP_ADDR}
 
-  for conf in /etc/nginx/nginx.conf.tpl $(ls /etc/nginx/conf.d/*.tpl)
+  for conf in /etc/nginx/nginx.conf.tpl $(ls /etc/nginx/conf.d/*.tpl 2>/dev/null)
   do
     envtpl "$conf"
   done
