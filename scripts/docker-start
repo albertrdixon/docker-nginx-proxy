@@ -1,0 +1,11 @@
+#!/bin/bash
+
+ulimit -n 65535
+: ${TRANSMISSION_HOST:=$TRANSMISSION_PORT_9091_TCP_ADDR}
+
+for conf in /etc/nginx/nginx.conf.tpl /etc/nginx/conf.d/*.tpl
+do
+  envtpl "$conf"
+done
+
+exec nginx
