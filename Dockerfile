@@ -14,13 +14,15 @@ RUN apt-get remove -y --purge build-essential python-dev &&\
 RUN rm -f /etc/nginx/nginx.conf
 COPY configs/* /etc/nginx/
 COPY scripts/* /usr/local/bin/
-RUN chmod a+rx /usr/local/bin/*
+RUN chmod a+rx /usr/local/bin/* &&\
+    mkdir /nginx
 
 WORKDIR /etc/nginx
 ENTRYPOINT ["docker-start"]
 EXPOSE 80 443
 
-ENV PATH              /usr/local/bin:$PATH
-ENV WORKER_PROCESSES  4
-ENV ERROR_LOG         /var/log/nginx/nginx-error.log
-ENV LOG_LEVEL         info
+ENV PATH                /usr/local/bin:$PATH
+ENV WORKER_PROCESSES    2
+ENV WORKER_CONNECTIONS  24
+ENV ERROR_LOG           /nginx/nginx.log
+ENV LOG_LEVEL           info
