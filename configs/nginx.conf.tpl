@@ -1,7 +1,6 @@
 worker_processes {{ WORKER_PROCESSES }};
 user root root;
-error_log {{ ERROR_LOG }} {{ LOG_LEVEL }};
-access_log off;
+error_log /nginx/{{ ERROR_LOG }} {{ LOG_LEVEL }};
 
 events {
   worker_connections {{ WORKER_CONNECTIONS }};
@@ -16,6 +15,7 @@ events {
 
 http {
   include mime.types;
+  access_log off;
 
   sendfile on;
   tcp_nopush on;
