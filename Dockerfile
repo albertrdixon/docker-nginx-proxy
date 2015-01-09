@@ -24,5 +24,5 @@ EXPOSE 80 443
 ENV PATH                /usr/local/bin:$PATH
 ENV WORKER_PROCESSES    2
 ENV WORKER_CONNECTIONS  24
-ENV ERROR_LOG           nginx.log
+ENV LOG_FILE           nginx.log
 ENV LOG_LEVEL           info

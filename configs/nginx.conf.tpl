@@ -1,6 +1,6 @@
 worker_processes {{ WORKER_PROCESSES }};
 user root root;
-error_log /nginx/{{ ERROR_LOG }} {{ LOG_LEVEL }};
+error_log /nginx/{{ LOG_FILE }} {{ LOG_LEVEL }};
 
 events {
   worker_connections {{ WORKER_CONNECTIONS }};
